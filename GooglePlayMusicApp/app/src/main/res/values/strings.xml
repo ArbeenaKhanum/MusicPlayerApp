@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GooglePlayMysicApp</string>
+    <string name="app_name">GooglePlayMusicApp</string>
+    <string name="google_play_launch_img">Google Play</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.googleplaymysicapp;
+package com.example.googleplaymusicapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
