@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/ivSongPlayImage"
-            android:text="Song Name"
+            android:layout_toLeftOf="@+id/ivMusicQuery"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
@@ -42,26 +42,18 @@
             android:layout_below="@+id/tvPlayerSongName"
             android:layout_marginTop="3dp"
             android:layout_toRightOf="@id/ivSongPlayImage"
-            android:text="Artist Name"
+            android:layout_toLeftOf="@+id/ivMusicQuery"
             android:textColor="@android:color/black"
             android:textSize="12sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:text="Now Playing"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
         <ImageView
+            android:id="@+id/ivMusicQuery"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
             android:src="@drawable/ic_queue_music_icon" />
     </RelativeLayout>
 
@@ -78,20 +70,24 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_music_icon" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/iBtnShuffleSong"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="bottom"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_songs_repeat_icon" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/iBtnRepeatSong"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_songs_shuffle_icon" />
 
     </FrameLayout>
@@ -125,29 +121,35 @@
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_songs_thumb_down" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/iBtnPrevSong"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
             android:layout_toLeftOf="@id/playPauseButton"
             android:layout_toRightOf="@id/thumbUp"
             android:src="@drawable/ic_previous_song_icon" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
             android:id="@+id/playPauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:clickable="true"
             android:focusable="true"
+            android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_play_songs_icon" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/iBtnNextSong"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:background="@android:color/transparent"
             android:layout_toLeftOf="@id/thumbDown"
             android:layout_toRightOf="@id/playPauseButton"
             android:src="@drawable/ic_next_songs_icon" />
@@ -175,6 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"
+            android:textSize="10sp"
             android:textColor="@android:color/black" />
 
         <SeekBar
@@ -182,8 +185,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" />
 
     </RelativeLayout>
 

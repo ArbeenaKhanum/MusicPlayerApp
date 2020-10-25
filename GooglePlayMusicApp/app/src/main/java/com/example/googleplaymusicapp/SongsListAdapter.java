@@ -34,7 +34,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.Song
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SongListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SongListViewHolder holder, final int position) {
         holder.mTvSongsTitle.setText(songsModelArrayList.get(position).getTitle());
 
         byte[] songImg = getSongsImg(songsModelArrayList.get(position).getResId());
@@ -43,6 +43,15 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.Song
         } else {
             Glide.with(holder.mIvSongsImg).load(R.drawable.ic_music_icon).into(holder.mIvSongsImg);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent musicPlayerIntent = new Intent(mContext, MusicPlayerActivity.class);
+                musicPlayerIntent.putExtra("position", position);
+                mContext.startActivity(musicPlayerIntent);
+            }
+        });
     }
 
     @Override
@@ -65,14 +74,6 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.Song
             mTvSongsTitle = itemView.findViewById(R.id.tvSongTitle);
             mIvSongsImg = itemView.findViewById(R.id.ivSongsImage);
             rlSongsList = itemView.findViewById(R.id.rlSongList);
-
-            rlSongsList.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent musicPlayerIntent = new Intent(mContext, MusicPlayerActivity.class);
-                    mContext.startActivity(musicPlayerIntent);
-                }
-            });
         }
     }
 
