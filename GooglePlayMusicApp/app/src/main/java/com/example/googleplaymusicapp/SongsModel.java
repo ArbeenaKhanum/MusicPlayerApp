@@ -1,22 +1,25 @@
 package com.example.googleplaymusicapp;
 
 public class SongsModel {
-    public int resId;
+    public String resId;
     public String title;
-    public String songName;
+    public String albumName;
     public String artistsName;
-    public int duration;
+    public String duration;
 
-    public SongsModel(int resId, String title, String songName,
-                      String artistsName, int duration) {
+    public SongsModel(String resId, String title, String albumName,
+                      String artistsName, String duration) {
         this.resId = resId;
         this.title = title;
-        this.songName = songName;
+        this.albumName = albumName;
         this.artistsName = artistsName;
         this.duration = duration;
     }
 
-    public int getResId() {
+    public SongsModel() {
+    }
+
+    public String getResId() {
         return resId;
     }
 
@@ -24,11 +27,15 @@ public class SongsModel {
         return title;
     }
 
-    public String getSongName() {
-        return songName;
+    public String getAlbumName() {
+        return albumName;
     }
 
     public String getArtistsName() {
         return artistsName;
+    }
+
+    public String getDuration() {
+        return duration;
     }
 }
