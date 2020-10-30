@@ -13,13 +13,13 @@
         android:layout_height="match_parent"
         android:id="@+id/rlAlbumList">
         <ImageView
-            android:id="@+id/ivAlbumImage"
+            android:id="@+id/ivArtistsImage"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:src="@drawable/ic_music_icon"/>
 
         <TextView
-            android:id="@+id/tvAlbumTitle"
+            android:id="@+id/tvArtistsTitle"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:singleLine="true"

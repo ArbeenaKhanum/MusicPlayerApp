@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,35 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
+        android:background="@color/colorAccent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-        <androidx.appcompat.widget.Toolbar
+        <RelativeLayout
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="match_parent"
             android:background="@color/colorAccent"
-            app:popupTheme="@style/Theme.AppCompat.Light" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimary"
-                android:text="Google Play Music"/>
+            android:layout_marginTop="10dp">
 
-            <ImageView
+            <TextView
+                android:id="@+id/tvGooglePlayMusic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="180dp"
-                android:src="@drawable/ic_search_icon"/>
-        </androidx.appcompat.widget.Toolbar>
+                android:text="Google Play Music"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:layout_marginStart="15dp"
+                android:textStyle="bold" />
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/tvGooglePlayMusic"
+                android:layout_marginEnd="20dp"/>
+        </RelativeLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
             android:background="@color/colorAccent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:tabIndicator="@color/colorPrimary"
             app:tabTextColor="@color/colorPrimary" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -48,5 +55,6 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar"/>
+</RelativeLayout>

@@ -1,27 +1,30 @@
 package com.example.googleplaymusicapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
-
 import static com.example.googleplaymusicapp.MainActivity.songsModels;
 
-public class MusicPlayerActivity extends AppCompatActivity {
+public class MusicPlayerActivity extends AppCompatActivity implements
+        MediaPlayListener, ServiceConnection {
 
     private TextView mTvSongOnPlayName;
     private TextView mTvOnPlayArtistName;
@@ -38,12 +41,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private int position = -1;
     static ArrayList<SongsModel> modelSongsList;
     static Uri uri;
-    static MediaPlayer mediaPlayer;
+    //static MediaPlayer mediaPlayer;
     private Handler mHandler = new Handler();
     private Thread playThread;
     private Thread pauseThread;
     private Thread previousThread;
     private Thread nextThread;
+    MusicService musicService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +55,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music_player);
         initViews();
         getIntentOnClick();
-        mTvSongOnPlayName.setText(modelSongsList.get(position).getTitle());
-        mTvOnPlayArtistName.setText(modelSongsList.get(position).getArtistsName());
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (mediaPlayer != null && fromUser) {
-                    mediaPlayer.seekTo(progress * 1000);
+                if (musicService != null && fromUser) {
+                    musicService.seekTo(progress * 1000);
                 }
             }
 
@@ -76,8 +78,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         MusicPlayerActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mediaPlayer != null) {
-                    int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                if (musicService != null) {
+                    int currentPosition = musicService.getCurrentPosition() / 1000;
                     mSeekBar.setProgress(currentPosition);
                     mTvDurationStart.setText(durationFormat(currentPosition));
                 }
@@ -89,10 +91,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        Intent intentMusicService = new Intent(this, MusicService.class);
+        bindService(intentMusicService, this, BIND_AUTO_CREATE);
         playThreadButton();
         previousThreadButton();
         nextThreadButton();
         super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(this);
     }
 
     private void nextThreadButton() {
@@ -112,23 +122,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
         nextThread.start();
     }
 
-    private void nextBtnClicked() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
+    public void nextBtnClicked() {
+        if (musicService.isPlaying()) {
+            musicService.stop();
+            musicService.release();
             position = (position + 1) % modelSongsList.size();
             uri = Uri.parse(modelSongsList.get(position).getResId());
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            musicService.createMediaPlayer(position);
             metaData(uri);
             mTvSongOnPlayName.setText(modelSongsList.get(position).getTitle());
             mTvOnPlayArtistName.setText(modelSongsList.get(position).getArtistsName());
 
-            mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
+            mSeekBar.setMax(musicService.getDuration() / 1000);
             MusicPlayerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayer != null) {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    if (musicService != null) {
+                        int currentPosition = musicService.getCurrentPosition() / 1000;
                         mSeekBar.setProgress(currentPosition);
                     }
 
@@ -137,23 +147,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
             });
 
             mBtnPlayPause.setImageResource(R.drawable.ic_songs_pause_icon);
-            mediaPlayer.start();
+            musicService.start();
         } else {
-            mediaPlayer.pause();
-            mediaPlayer.release();
+            musicService.stop();
+            musicService.release();
             position = (position + 1) % modelSongsList.size();
             uri = Uri.parse(modelSongsList.get(position).getResId());
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            musicService.createMediaPlayer(position);
             metaData(uri);
             mTvSongOnPlayName.setText(modelSongsList.get(position).getTitle());
             mTvOnPlayArtistName.setText(modelSongsList.get(position).getArtistsName());
 
-            mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
+            mSeekBar.setMax(musicService.getDuration() / 1000);
             MusicPlayerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayer != null) {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    if (musicService != null) {
+                        int currentPosition = musicService.getCurrentPosition() / 1000;
                         mSeekBar.setProgress(currentPosition);
                     }
 
@@ -182,24 +192,24 @@ public class MusicPlayerActivity extends AppCompatActivity {
         previousThread.start();
     }
 
-    private void previousBtnClicked() {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
+    public void previousBtnClicked() {
+        if (musicService.isPlaying()) {
+            musicService.stop();
+            musicService.release();
 
             position = ((position - 1) <= 0 ? (modelSongsList.size() - 1) : (position - 1));
             uri = Uri.parse(modelSongsList.get(position).getResId());
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            musicService.createMediaPlayer(position);
             metaData(uri);
             mTvSongOnPlayName.setText(modelSongsList.get(position).getTitle());
             mTvOnPlayArtistName.setText(modelSongsList.get(position).getArtistsName());
 
-            mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
+            mSeekBar.setMax(musicService.getDuration() / 1000);
             MusicPlayerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayer != null) {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    if (musicService != null) {
+                        int currentPosition = musicService.getCurrentPosition() / 1000;
                         mSeekBar.setProgress(currentPosition);
                     }
 
@@ -208,24 +218,24 @@ public class MusicPlayerActivity extends AppCompatActivity {
             });
 
             mBtnPlayPause.setImageResource(R.drawable.ic_songs_pause_icon);
-            mediaPlayer.start();
+            musicService.start();
 
         } else {
-            mediaPlayer.pause();
-            mediaPlayer.release();
+            musicService.stop();
+            musicService.release();
             position = ((position - 1) <= 0 ? (modelSongsList.size() - 1) : (position - 1));
             uri = Uri.parse(modelSongsList.get(position).getResId());
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            musicService.createMediaPlayer(position);
             metaData(uri);
             mTvSongOnPlayName.setText(modelSongsList.get(position).getTitle());
             mTvOnPlayArtistName.setText(modelSongsList.get(position).getArtistsName());
 
-            mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
+            mSeekBar.setMax(musicService.getDuration() / 1000);
             MusicPlayerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayer != null) {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    if (musicService != null) {
+                        int currentPosition = musicService.getCurrentPosition() / 1000;
                         mSeekBar.setProgress(currentPosition);
                     }
 
@@ -255,17 +265,17 @@ public class MusicPlayerActivity extends AppCompatActivity {
         playThread.start();
     }
 
-    private void playPauseBtnClicked() {
-        if (mediaPlayer.isPlaying()) {
+    public void playPauseBtnClicked() {
+        if (musicService.isPlaying()) {
             mBtnPlayPause.setImageResource(R.drawable.ic_play_songs_icon);
-            mediaPlayer.pause();
-            mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
+            musicService.pause();
+            mSeekBar.setMax(musicService.getDuration() / 1000);
 
             MusicPlayerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayer != null) {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    if (musicService != null) {
+                        int currentPosition = musicService.getCurrentPosition() / 1000;
                         mSeekBar.setProgress(currentPosition);
                     }
 
@@ -274,14 +284,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
             });
         } else {
             mBtnPlayPause.setImageResource(R.drawable.ic_songs_pause_icon);
-            mediaPlayer.start();
-            mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
+            musicService.start();
+            mSeekBar.setMax(musicService.getDuration() / 1000);
 
             MusicPlayerActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (mediaPlayer != null) {
-                        int currentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                    if (musicService != null) {
+                        int currentPosition = musicService.getCurrentPosition() / 1000;
                         mSeekBar.setProgress(currentPosition);
                     }
 
@@ -315,18 +325,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
             uri = Uri.parse(modelSongsList.get(position).getResId());
         }
 
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            mediaPlayer.start();
-        } else {
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            mediaPlayer.start();
-        }
-
-        mSeekBar.setMax(mediaPlayer.getDuration() / 1000);
-        metaData(uri);
+        Intent intent = new Intent(this, MusicService.class);
+        intent.putExtra("servicePosition", position);
+        startService(intent);
     }
 
     private void initViews() {
@@ -360,4 +361,18 @@ public class MusicPlayerActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        MusicService.MusicServiceBinder musicServiceBinder = (MusicService.MusicServiceBinder) service;
+        musicService = musicServiceBinder.getMusicService();
+        mSeekBar.setMax(musicService.getDuration() / 1000);
+        metaData(uri);
+        mTvSongOnPlayName.setText(songsModels.get(position).getTitle());
+        mTvOnPlayArtistName.setText(songsModels.get(position).getArtistsName());
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
+    }
 }

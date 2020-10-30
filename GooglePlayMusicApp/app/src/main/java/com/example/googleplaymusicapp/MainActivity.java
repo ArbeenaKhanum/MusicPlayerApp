@@ -14,8 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.googleplaymusicapp.adapters.FragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private static final int REQUEST_CODE = 101;
     static ArrayList<SongsModel> songsModels;
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,19 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         mViewPager = findViewById(R.id.viewPager);
         mTabLayout = findViewById(R.id.tabLayout);
+        mSearchView = findViewById(R.id.searchView);
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     public static ArrayList<SongsModel> getSongs(Context context) {

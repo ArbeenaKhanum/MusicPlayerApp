@@ -1,4 +1,4 @@
-package com.example.googleplaymusicapp;
+package com.example.googleplaymusicapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.googleplaymusicapp.MusicPlayerActivity;
+import com.example.googleplaymusicapp.R;
+import com.example.googleplaymusicapp.SongsModel;
 
 import java.util.ArrayList;
 

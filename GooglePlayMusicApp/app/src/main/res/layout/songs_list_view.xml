@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="10dp"
+        android:layout_toRightOf="@id/ivSongsImage"
         android:textColor="@android:color/black"
         android:textSize="12sp"
         android:paddingStart="20dp"
