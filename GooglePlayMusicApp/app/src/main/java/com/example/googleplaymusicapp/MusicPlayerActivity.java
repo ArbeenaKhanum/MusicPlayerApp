@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.media.MediaMetadataRetriever;
@@ -15,13 +16,22 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
+import java.util.Random;
+
+import static com.example.googleplaymusicapp.MainActivity.isRepeat;
+import static com.example.googleplaymusicapp.MainActivity.isShuffled;
 import static com.example.googleplaymusicapp.MainActivity.songsModels;
+import static com.example.googleplaymusicapp.adapters.SongsListAdapter.songsModelArrayList;
 
 public class MusicPlayerActivity extends AppCompatActivity implements
         MediaPlayListener, ServiceConnection {
@@ -55,6 +65,38 @@ public class MusicPlayerActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_music_player);
         initViews();
         getIntentOnClick();
+
+        mBtnShuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isShuffled) {
+
+                    isShuffled = false;
+                    mBtnShuffle.setImageResource(R.drawable.ic_shuffle_off);
+
+                } else {
+
+                    isShuffled = true;
+                    mBtnShuffle.setImageResource(R.drawable.ic_songs_shuffle_icon);
+                }
+            }
+        });
+
+        mBtnRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRepeat) {
+
+                    isRepeat = false;
+                    mBtnRepeat.setImageResource(R.drawable.ic_repeat_off);
+
+                } else {
+
+                    isRepeat = true;
+                    mBtnRepeat.setImageResource(R.drawable.ic_songs_repeat_icon);
+                }
+            }
+        });
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -126,7 +168,16 @@ public class MusicPlayerActivity extends AppCompatActivity implements
         if (musicService.isPlaying()) {
             musicService.stop();
             musicService.release();
-            position = (position + 1) % modelSongsList.size();
+
+            if(isShuffled && !isRepeat) {
+                position = getRandom(modelSongsList.size() - 1);
+            } else if(!isShuffled && !isRepeat) {
+                position = ((position + 1) % modelSongsList.size());
+          }
+//            else {
+//               position is same position;
+//            }
+
             uri = Uri.parse(modelSongsList.get(position).getResId());
             musicService.createMediaPlayer(position);
             metaData(uri);
@@ -151,7 +202,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements
         } else {
             musicService.stop();
             musicService.release();
-            position = (position + 1) % modelSongsList.size();
+
+            if(isShuffled && !isRepeat) {
+                position = getRandom(modelSongsList.size() - 1);
+            } else if(!isShuffled && !isRepeat) {
+                position = ((position + 1) % modelSongsList.size());
+            }
+
             uri = Uri.parse(modelSongsList.get(position).getResId());
             musicService.createMediaPlayer(position);
             metaData(uri);
@@ -173,6 +230,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements
 
             mBtnPlayPause.setImageResource(R.drawable.ic_play_songs_icon);
         }
+    }
+
+    private int getRandom(int i) {
+        Random random = new Random();
+        return random.nextInt(i + 1);
     }
 
     private void previousThreadButton() {
@@ -197,7 +259,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements
             musicService.stop();
             musicService.release();
 
-            position = ((position - 1) <= 0 ? (modelSongsList.size() - 1) : (position - 1));
+            if(isShuffled && !isRepeat) {
+                position = getRandom(modelSongsList.size() - 1);
+            } else if(!isShuffled && !isRepeat) {
+                position = ((position - 1) <= 0 ? (modelSongsList.size() - 1) : (position - 1));
+            }
+
             uri = Uri.parse(modelSongsList.get(position).getResId());
             musicService.createMediaPlayer(position);
             metaData(uri);
@@ -223,7 +290,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements
         } else {
             musicService.stop();
             musicService.release();
-            position = ((position - 1) <= 0 ? (modelSongsList.size() - 1) : (position - 1));
+
+            if(isShuffled && !isRepeat) {
+                position = getRandom(modelSongsList.size() - 1);
+            } else if(!isShuffled && !isRepeat) {
+                position = ((position - 1) <= 0 ? (modelSongsList.size() - 1) : (position - 1));
+            }
+
             uri = Uri.parse(modelSongsList.get(position).getResId());
             musicService.createMediaPlayer(position);
             metaData(uri);
@@ -375,4 +448,5 @@ public class MusicPlayerActivity extends AppCompatActivity implements
     public void onServiceDisconnected(ComponentName name) {
 
     }
+
 }

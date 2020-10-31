@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GooglePlayMusicApp</string>
+    <string name="app_name">Google Play Music</string>
     <string name="google_play_launch_img">Google Play</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

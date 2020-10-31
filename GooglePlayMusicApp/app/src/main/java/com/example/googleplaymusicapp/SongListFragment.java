@@ -23,7 +23,7 @@ import static com.example.googleplaymusicapp.MainActivity.songsModels;
 public class SongListFragment extends Fragment {
 
     private RecyclerView mRvListOfSongs;
-    private SongsListAdapter songsListAdapter;
+    public static SongsListAdapter songsListAdapter;
     private ArrayList<SongsModel> songsModelArrayList;
     private static final String ARG_PARAM1 = "param1";
 
@@ -72,7 +72,6 @@ public class SongListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {

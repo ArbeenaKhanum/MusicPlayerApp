@@ -11,35 +11,9 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:background="@color/colorAccent"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-        <RelativeLayout
-            android:id="@+id/toolBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorAccent"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/tvGooglePlayMusic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Google Play Music"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
-                android:layout_marginStart="15dp"
-                android:textStyle="bold" />
-
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@id/tvGooglePlayMusic"
-                android:layout_marginEnd="20dp"/>
-        </RelativeLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -47,8 +21,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:tabIndicator="@color/colorPrimary"
-            app:tabTextColor="@color/colorPrimary" />
+            app:tabIndicator="@android:color/white"
+            app:tabTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -56,5 +30,5 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appBar"/>
+        android:layout_below="@id/appBar" />
 </RelativeLayout>
