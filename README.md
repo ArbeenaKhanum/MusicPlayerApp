@@ -13,3 +13,6 @@
 * The app allows you to Play, Pause and Stop songs with the help of Services.
 * This app also provides the feature to shuffle and repeat songs.
 * As per the requirement, the songs from the app can be deleted.
+
+## Screenshots and description
+
