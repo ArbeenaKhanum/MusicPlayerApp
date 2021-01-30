@@ -9,13 +9,12 @@
 
 ## Features
 
-* The Music Player app displays a list of songs. With the help of Content Provider, all the songs from mobile are provided to this music player app.
+* The Music Player app displays a list of songs. With the help of Content Provider, all the songs from mobile device are provided to this music player app.
 * The app allows you to Play, Pause and Stop songs with the help of Services.
 * This app also provides the feature to shuffle and repeat songs.
 * As per the requirement, the songs from the app can be deleted.
 
 ## Screenshots and description
-
 
 After opening the application, you will find the welcome screen that stays in for 2 seconds. Afer that you can see the main home screen of the application. It displays the songs
 from mobile device using content provider. 
@@ -38,7 +37,7 @@ The Home, Songs, Albums and Artists fragments contains its respective contents w
 
 The Songs fragment displays the list of all the songs with the song name. On click of the song, its respective Music Play screen appears and the service starts so song starts playing. 
 
-Using Services, user can play, pause & stop the song on click of play button. It provides the feature to shuffle the songs in the device and play it and if the user wants a song to play on repeat mode, user can click on repeat song option. It also consists of seek bar and it diplays the duration of the song. 
+Using Services, user can play, pause & stop the song on click of play button. It provides the feature to shuffle the songs in the device and play it and if the user wants a song to play on repeat mode, user can click on repeat song option. It also consists of seek bar and it displays the duration of the current playing song. 
 
 |**SongsList screen**|**Music Play screen**|
 |:---|:--|
@@ -47,7 +46,7 @@ Using Services, user can play, pause & stop the song on click of play button. It
 <br/> <br/>
 
 The user can search the songs as per their choice with the help of seach view option. The list of songs are filtered according to the search input. 
-The songs can be sorted based on the songs alphabets, date and size. It also provides the options to delete the song from the device. if the user need to do it. they can click on the menu option at the end of the song and delete it.
+The songs can be sorted based on the songs alphabets, date and size. It also provides the options to delete the song from the device. If the user wants to do it, they can click on the menu option at the end of the song and delete it.
 
 |**Search view**|**Sort songs**|**Delete songs**|
 |:---|:--|:--|
