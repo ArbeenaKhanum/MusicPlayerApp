@@ -16,3 +16,24 @@
 
 ## Screenshots and description
 
+|**Welcome screen**|**Main Home screen**|
+|:---|:--|
+|<img src=images/music_splash.jpeg height="500px"/>|<img src=images/music_home.jpeg height="500px"/>|
+
+<br/><br/>
+
+|**Albums screen**|**Artists screen**|
+|:---|:--|
+|<img src=images/music_album.jpeg height="500px"/>|<img src=images/music_artists.jpeg height="500px"/>|
+
+<br/> <br/>
+
+|**SongsList screen**|**Play screen**|
+|:---|:--|
+|<img src=images/music_song_list.jpeg height="500px"/>|<img src=images/music_song_play.jpeg height="500px"/>|
+
+<br/> <br/>
+
+|**Search view**|**Sort songs**|**Delete songs**|
+|:---|:--|:--|
+|<img src=images/music_search.jpeg height="500px"/>|<img src=images/music_sort.jpeg height="500px"/>|<img src=images/music_delete.jpeg height="500px"/>
